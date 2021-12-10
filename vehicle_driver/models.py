@@ -6,7 +6,6 @@ from re import fullmatch
 
 
 class Driver(models.Model):
-    # id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     created_at = models.DateField()
@@ -21,8 +20,7 @@ def validate_plate_number(value):
 
 
 class Vehicle(models.Model):
-    # id = models.AutoField(primary_key=True)
-    driver_id = models.ForeignKey(Driver, on_delete=models.SET_NULL)
+    driver_id = models.ForeignKey(Driver, on_delete=models.SET_NULL, null=True)
     make = models.CharField(max_length=50)
     model = models.CharField(max_length=50)
     plate_number = models.CharField(
