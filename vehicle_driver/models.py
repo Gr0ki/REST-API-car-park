@@ -24,8 +24,7 @@ class Vehicle(models.Model):
     make = models.CharField(max_length=50)
     model = models.CharField(max_length=50)
     plate_number = models.CharField(
-                        max_length=10,
-                        validators=[validate_plate_number]
-                        )
+                                    max_length=10,
+                                    validators=[validate_plate_number])
     created_at = models.DateField()
     updated_at = models.DateField()
