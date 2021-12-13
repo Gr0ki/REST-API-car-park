@@ -4,6 +4,8 @@ from vehicle_driver.models import Driver, Vehicle
 
 
 class DriverSerializer(serializers.ModelSerializer):
+    created_at = serializers.DateField(format="%d/%m/%Y")
+    updated_at = serializers.DateField(format="%d/%m/%Y")
 
     class Meta:
         model = Driver
@@ -17,6 +19,8 @@ class DriverSerializer(serializers.ModelSerializer):
 
 
 class VehicleSerializer(serializers.ModelSerializer):
+    created_at = serializers.DateField(format="%d/%m/%Y")
+    updated_at = serializers.DateField(format="%d/%m/%Y")
 
     class Meta:
         model = Vehicle
