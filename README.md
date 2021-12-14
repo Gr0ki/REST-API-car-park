@@ -1,7 +1,7 @@
 Here is a test REST API (backend app) which can be used to exchange information
 with requests and responses between the server and the client in the appropriate form.
 
-
+_____________________________________________________________________________________________________________
 
 Here is the list of application's endpoints:
 
@@ -26,7 +26,7 @@ For vehicles:
 
 Note: "-" sign before the endpoint means that it isn't working yet
 
-
+_____________________________________________________________________________________________________________
 
 The main settings of a project is in test_server folder while all functionality of an app
 is in vehicle_driver folder.
