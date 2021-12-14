@@ -21,7 +21,7 @@ For vehicles:
 * GET /vehicles/vehicle/<vehicle_id>              - Receive information about a specific vehicle
 * POST /vehicles/vehicle/                         - Create a new one vehicle
 - UPDATE /vehicles/vehicle/<vehicle_id>/          - Edit information about a specific vehicle
-- POST /vehicles/set_driver/<vehicle_id>/         - Put the driver in the car or get the driver out of the car
+* POST /vehicles/set_driver/<vehicle_id>/         - Put the driver in the car or get the driver out of the car
 * DELETE /vehicles/vehicle/<vehicle_id>/          - Delete information about a specific vehicle
 
 Note: "-" sign before the endpoint means that it isn't working yet

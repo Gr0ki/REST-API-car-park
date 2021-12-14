@@ -2,6 +2,7 @@ from django.http.response import JsonResponse, HttpResponse
 from rest_framework.parsers import JSONParser
 from rest_framework import status
 from rest_framework.decorators import api_view
+from random import choice
 
 from .serializers import DriverSerializer, VehicleSerializer
 from .models import Driver, Vehicle
@@ -157,13 +158,24 @@ def add_or_remove_driver_from_vehicle(request, vehicle_id):
     """
     Put the driver in the car or get the driver out of the car
     """
-    #Need to take only one field for update
 
-    #if request.method == 'POST':
-    #    serializer = VehicleSerializer(data=request.data)
-    #    if serializer.is_valid():
-    #        serializer.save()
-    #        return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
-    #    return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        vehicle = Vehicle.objects.get(id=vehicle_id)
+    except Vehicle.DoesNotExist:
+        return HttpResponse(status=404)
 
-
+    if request.method == 'POST':
+        if vehicle.driver_id is not None:
+            vehicle.driver_id = None
+        elif vehicle.driver_id is None:
+            try:
+                drivers_list = Driver.objects.all().values('id')
+            except Driver.DoesNotExist:
+                return HttpResponse(status=404)
+            temp = []
+            for i in drivers_list:
+                temp.append(i['id'])
+            driver_instance = Driver.objects.get(id=choice(temp))
+            vehicle.driver_id = driver_instance
+        vehicle.save(update_fields=['driver_id'])
+        return HttpResponse(status=200)
