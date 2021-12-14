@@ -55,8 +55,8 @@ def drivers_list_before_date(request):
         return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
 
 
-# 'PATCH'?
-@api_view(['GET', 'UPDATE', 'DELETE'])
+# 'UPDATE' = 'PATCH'?
+@api_view(['GET', 'PATCH', 'DELETE'])
 def driver_info(request, id):
     """
     Receive, edit, or delete information of a particular driver
@@ -71,12 +71,7 @@ def driver_info(request, id):
         return JsonResponse(serializer.data, status=status.HTTP_200_OK)
 
     #elif request.method == 'PATCH':
-        #data = JSONParser().parse(request)
-        #serializer = DriverSerializer(driver, data=data)
-        #if serializer.is_valid():
-        #    serializer.save()
-        #    return JsonResponse(serializer.data)
-        #return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 
     elif request.method == 'DELETE':
         driver.delete()
@@ -125,8 +120,8 @@ def vehicle_list_with_or_without_driver(request, driver_status):
         return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
 
 
-# 'PATCH'?
-@api_view(['GET', 'UPDATE', 'DELETE'])
+# 'UPDATE' = 'PATCH'?
+@api_view(['GET', 'PATCH', 'DELETE'])
 def vehicle_info(request, vehicle_id):
     """
     Receive, edit, or delete information about a specific vehicle
@@ -141,12 +136,7 @@ def vehicle_info(request, vehicle_id):
         return JsonResponse(serializer.data, status=status.HTTP_200_OK)
 
     # elif request.method == 'PATCH':
-    # data = JSONParser().parse(request)
-    # serializer = VehicleSerializer(vehicle, data=data)
-    # if serializer.is_valid():
-    #    serializer.save()
-    #    return JsonResponse(serializer.data)
-    # return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 
     elif request.method == 'DELETE':
         vehicle.delete()
