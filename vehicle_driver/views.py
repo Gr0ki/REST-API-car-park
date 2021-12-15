@@ -71,7 +71,7 @@ def driver_info(request, id):
         return JsonResponse(serializer.data, status=status.HTTP_200_OK)
 
     #elif request.method == 'PATCH':
-    
+
 
     elif request.method == 'DELETE':
         driver.delete()

@@ -29,7 +29,8 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('make', models.CharField(max_length=50)),
                 ('model', models.CharField(max_length=50)),
-                ('plate_number', models.CharField(max_length=10, validators=[vehicle_driver.models.validate_plate_number])),
+                ('plate_number', models.CharField(max_length=10, validators=[
+                    vehicle_driver.models.validate_plate_number])),
                 ('created_at', models.DateField()),
                 ('updated_at', models.DateField()),
                 ('driver_id', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='vehicle_driver.driver')),
