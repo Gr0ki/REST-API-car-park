@@ -37,7 +37,7 @@ def drivers_list_after_date(request):
             driver = Driver.objects.filter(created_at__gte='2021-11-10')
             serializer = DriverSerializer(driver, many=True)
         except Driver.DoesNotExist:
-            return HttpResponse(status=404)
+            return JsonResponse({'status': 404}, status=status.HTTP_404_NOT_FOUND)
         return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
 
 
@@ -51,7 +51,7 @@ def drivers_list_before_date(request):
             driver = Driver.objects.filter(created_at__lte='2021-11-16')
             serializer = DriverSerializer(driver, many=True)
         except Driver.DoesNotExist:
-            return HttpResponse(status=404)
+            return JsonResponse({'status': 404}, status=status.HTTP_404_NOT_FOUND)
         return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
 
 
@@ -64,7 +64,7 @@ def driver_info(request, id):
     try:
         driver = Driver.objects.get(id=id)
     except Driver.DoesNotExist:
-        return HttpResponse(status=404)
+        return JsonResponse({'status': 404}, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
         serializer = DriverSerializer(driver)
@@ -108,7 +108,7 @@ def vehicle_list_with_or_without_driver(request, driver_status):
             vehicles = Vehicle.objects.filter(driver_id__isnull=True)
             serializer = VehicleSerializer(vehicles, many=True)
         except Vehicle.DoesNotExist:
-            return HttpResponse(status=404)
+            return JsonResponse({'status': 404}, status=status.HTTP_404_NOT_FOUND)
         return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
 
     elif request.method == 'GET' and driver_status == 'no':
@@ -116,8 +116,24 @@ def vehicle_list_with_or_without_driver(request, driver_status):
             vehicles = Vehicle.objects.filter(driver_id__isnull=False)
             serializer = VehicleSerializer(vehicles, many=True)
         except Vehicle.DoesNotExist:
-            return HttpResponse(status=404)
+            return JsonResponse({'status': 404}, status=status.HTTP_404_NOT_FOUND)
         return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def is_driver_in_vehicle(request, vehicle_id):
+    """
+    Display if the driver is in the vehicle
+    """
+    if request.method == 'GET':
+        try:
+            vehicle = Vehicle.objects.get(id=vehicle_id)
+        except Vehicle.DoesNotExist:
+            return JsonResponse({'status': 404}, status=status.HTTP_404_NOT_FOUND)
+
+        return JsonResponse({'id': vehicle_id, 'is_driver_in_vehicle': not vehicle.is_driver_without_vehicle()},
+                            status=status.HTTP_200_OK
+                            )
 
 
 # 'UPDATE' = 'PATCH'?
@@ -130,7 +146,7 @@ def vehicle_info(request, vehicle_id):
         vehicle = Vehicle.objects.get(id=vehicle_id)
         serializer = VehicleSerializer(vehicle)
     except Vehicle.DoesNotExist:
-        return HttpResponse(status=404)
+        return JsonResponse({'status': 404}, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
         return JsonResponse(serializer.data, status=status.HTTP_200_OK)
@@ -152,20 +168,21 @@ def add_or_remove_driver_from_vehicle(request, vehicle_id):
     try:
         vehicle = Vehicle.objects.get(id=vehicle_id)
     except Vehicle.DoesNotExist:
-        return HttpResponse(status=404)
+        return JsonResponse({'status': 404}, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'POST':
-        if vehicle.driver_id is not None:
+        if not vehicle.is_driver_without_car():
             vehicle.driver_id = None
-        elif vehicle.driver_id is None:
+        elif vehicle.is_driver_without_car():
             try:
                 drivers_list = Driver.objects.all().values('id')
             except Driver.DoesNotExist:
-                return HttpResponse(status=404)
+                return JsonResponse({'status': 404}, status=status.HTTP_404_NOT_FOUND)
             temp = []
             for i in drivers_list:
                 temp.append(i['id'])
             driver_instance = Driver.objects.get(id=choice(temp))
             vehicle.driver_id = driver_instance
         vehicle.save(update_fields=['driver_id'])
-        return HttpResponse(status=200)
+        serializer = VehicleSerializer(vehicle)
+        return JsonResponse(serializer, status=status.HTTP_200_OK)

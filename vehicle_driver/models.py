@@ -11,6 +11,9 @@ class Driver(models.Model):
     created_at = models.DateField()
     updated_at = models.DateField()
 
+    def __str__(self):
+        return f"{self.id} - {self.first_name} {self.last_name}"
+
 
 def validate_plate_number(value):
     if fullmatch('([А-ЯҐЄІЇ]{2})|([A-Z]{2})[ ][0-9]{4}[ ][А-ЯҐЄІЇ]{2}', value) is not None:
@@ -30,3 +33,12 @@ class Vehicle(models.Model):
                                     validators=[validate_plate_number])
     created_at = models.DateField()
     updated_at = models.DateField()
+
+    def is_driver_without_vehicle(self):
+        if self.driver_id is None:
+            return True
+        else:
+            return False
+
+    def __str__(self):
+        return f"{self.id}: {self.make} {self.model} - {self.plate_number}"
