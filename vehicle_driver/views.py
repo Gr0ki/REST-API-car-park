@@ -103,7 +103,7 @@ def vehicle_list_with_or_without_driver(request, driver_status):
     """
     Display a list of vehicles with or without drivers
     """
-    if request.method == 'GET' and driver_status == 'yes':
+    if request.method == 'GET' and driver_status == 'no':
         try:
             vehicles = Vehicle.objects.filter(driver_id__isnull=True)
             serializer = VehicleSerializer(vehicles, many=True)
@@ -111,7 +111,7 @@ def vehicle_list_with_or_without_driver(request, driver_status):
             return JsonResponse({'status': 404}, status=status.HTTP_404_NOT_FOUND)
         return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
 
-    elif request.method == 'GET' and driver_status == 'no':
+    elif request.method == 'GET' and driver_status == 'yes':
         try:
             vehicles = Vehicle.objects.filter(driver_id__isnull=False)
             serializer = VehicleSerializer(vehicles, many=True)

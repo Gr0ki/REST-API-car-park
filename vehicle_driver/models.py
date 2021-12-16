@@ -16,7 +16,7 @@ class Driver(models.Model):
 
 
 def validate_plate_number(value):
-    if fullmatch('([А-ЯҐЄІЇ]{2})|([A-Z]{2})[ ][0-9]{4}[ ][А-ЯҐЄІЇ]{2}', value) is not None:
+    if fullmatch('(([А-ЯҐЄІЇ]{2})|([А-Я]{2})|([A-Z]{2}))[ ][0-9]{4}[ ](([А-ЯҐЄІЇ]{2})|([А-Я]{2}))', value) is not None:
         return value
     else:
         raise ValidationError(
