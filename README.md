@@ -13,6 +13,7 @@ What's new so far:
 * New endpoint GET /vehicles/vehicle/?with_driver/<vehicle_id>/ - Display if the driver is in the vehicle
 * Some bug fixes
 * Create admin panel
+* Fix date and datetime formatting for local preference
 
 __________________________________________________________________________________________________________________________________
 
