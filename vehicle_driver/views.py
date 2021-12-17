@@ -1,4 +1,4 @@
-from django.http.response import JsonResponse, HttpResponse
+from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -34,7 +34,7 @@ def drivers_list_after_date(request):
     """
     if request.method == 'GET':
         try:
-            driver = Driver.objects.filter(created_at__gte='2021-11-10')
+            driver = Driver.objects.filter(created_at__gte='10/11/2021')
             serializer = DriverSerializer(driver, many=True)
         except Driver.DoesNotExist:
             return JsonResponse({'status': 404}, status=status.HTTP_404_NOT_FOUND)
@@ -48,7 +48,7 @@ def drivers_list_before_date(request):
     """
     if request.method == 'GET':
         try:
-            driver = Driver.objects.filter(created_at__lte='2021-11-16')
+            driver = Driver.objects.filter(created_at__lte='16/11/2021')
             serializer = DriverSerializer(driver, many=True)
         except Driver.DoesNotExist:
             return JsonResponse({'status': 404}, status=status.HTTP_404_NOT_FOUND)

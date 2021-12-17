@@ -102,7 +102,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 REST_FRAMEWORK = {
-    "DATE_INPUT_FORMATS": ["%d/%m/%Y"],
+    'DATE_INPUT_FORMATS': ['%d/%m/%Y'],
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json',
 }
 
 
@@ -127,3 +128,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Fix date and datetime formatting
+
+FORMAT_MODULE_PATH = 'test_server.formats'
+
