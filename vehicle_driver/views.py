@@ -9,7 +9,7 @@ from .models import Driver, Vehicle
 
 
 @api_view(['GET', 'POST'])
-def driver_list(request):
+def drivers_list(request):
     """
     Display a list of drivers or create a new one
     """
@@ -70,8 +70,7 @@ def driver_info(request, id):
         serializer = DriverSerializer(driver)
         return JsonResponse(serializer.data, status=status.HTTP_200_OK)
 
-    #elif request.method == 'PATCH':
-
+#    elif request.method == 'PATCH':
 
     elif request.method == 'DELETE':
         driver.delete()
@@ -80,7 +79,7 @@ def driver_info(request, id):
 
 
 @api_view(['GET', 'POST'])
-def vehicle_list(request):
+def vehicles_list(request):
     """
     Display a list of vehicles or create a new one
     """
@@ -99,7 +98,7 @@ def vehicle_list(request):
 
 
 @api_view(['GET'])
-def vehicle_list_with_or_without_driver(request, driver_status):
+def vehicles_list_with_or_without_driver(request, driver_status):
     """
     Display a list of vehicles with or without drivers
     """
@@ -152,7 +151,6 @@ def vehicle_info(request, vehicle_id):
         return JsonResponse(serializer.data, status=status.HTTP_200_OK)
 
     # elif request.method == 'PATCH':
-    
 
     elif request.method == 'DELETE':
         vehicle.delete()
@@ -175,11 +173,11 @@ def add_or_remove_driver_from_vehicle(request, vehicle_id):
             vehicle.driver_id = None
         elif vehicle.is_driver_without_car():
             try:
-                drivers_list = Driver.objects.all().values('id')
+                d_list = Driver.objects.all().values('id')
             except Driver.DoesNotExist:
                 return JsonResponse({'status': 404}, status=status.HTTP_404_NOT_FOUND)
             temp = []
-            for i in drivers_list:
+            for i in d_list:
                 temp.append(i['id'])
             driver_instance = Driver.objects.get(id=choice(temp))
             vehicle.driver_id = driver_instance

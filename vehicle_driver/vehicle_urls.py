@@ -4,13 +4,25 @@ from . import views
 
 
 urlpatterns = [
-    re_path(r'^vehicle/$', views.vehicle_list),                                         # GET, POST
-    re_path(r'^vehicle/?with_drivers=(?P<driver_status>yes|no)/$',
-            views.vehicle_list_with_or_without_driver),                                 # GET
-    re_path(r'^vehicle/?with_driver/(?P<vehicle_id>[0-9]+)/$', views.is_driver_in_vehicle),   # GET
-    re_path(r'^vehicle/(?P<vehicle_id>[0-9]+)/$',
-            views.vehicle_info),                                                        # GET, UPDATE (PATCH), DELETE
-    re_path(r'^set_driver/(?P<vehicle_id>[0-9]+)/$',
-            views.add_or_remove_driver_from_vehicle),                                   # POST
+    re_path(r'^vehicle/$',                                          # GET, POST
+            views.vehicles_list,
+            name='vehicles-list'
+            ),
+    re_path(r'^vehicle/?with_drivers=(?P<driver_status>yes|no)/$',  # GET
+            views.vehicles_list_with_or_without_driver,
+            name='vehicles-list-with-or-without-driver'
+            ),
+    re_path(r'^vehicle/?with_driver/(?P<vehicle_id>[0-9]+)/$',      # GET
+            views.is_driver_in_vehicle,
+            name='is-driver-in-vehicle'
+            ),
+    re_path(r'^vehicle/(?P<vehicle_id>[0-9]+)/$',                   # GET, UPDATE (PATCH), DELETE
+            views.vehicle_info,
+            name='vehicle-info'
+            ),
+    re_path(r'^set_driver/(?P<vehicle_id>[0-9]+)/$',                # POST
+            views.add_or_remove_driver_from_vehicle,
+            name='add-or-remove-driver-from-vehicle'
+            ),
 
 ]
