@@ -16,7 +16,7 @@ urlpatterns = [
             views.drivers_list_before_date,
             name='drivers-list-before-date'
             ),
-    re_path(r'^driver/(?P<id>[0-9]+)/$',                    # GET, UPDATE (PATCH), DELETE
+    re_path(r'^driver/(?P<driver_id>[0-9]+)/$',                    # GET, UPDATE (PATCH), DELETE
             views.driver_info,
             name='driver-info'
             ),

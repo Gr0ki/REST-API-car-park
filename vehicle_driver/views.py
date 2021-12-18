@@ -57,12 +57,12 @@ def drivers_list_before_date(request):
 
 # 'UPDATE' = 'PATCH'?
 @api_view(['GET', 'PATCH', 'DELETE'])
-def driver_info(request, id):
+def driver_info(request, driver_id):
     """
     Receive, edit, or delete information of a particular driver
     """
     try:
-        driver = Driver.objects.get(id=id)
+        driver = Driver.objects.get(id=driver_id)
     except Driver.DoesNotExist:
         return JsonResponse({'status': 404}, status=status.HTTP_404_NOT_FOUND)
 
