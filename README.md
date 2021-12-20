@@ -14,6 +14,7 @@ What's new so far:
 * Some bug fixes
 * Create admin panel
 * Fix date and datetime formatting for local preference
+* Create tests for views.py.
 
 __________________________________________________________________________________________________________________________________
 
