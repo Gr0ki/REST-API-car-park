@@ -169,9 +169,9 @@ def add_or_remove_driver_from_vehicle(request, vehicle_id):
         return JsonResponse({'status': 404}, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'POST':
-        if not vehicle.is_driver_without_car():
+        if not vehicle.is_driver_without_vehicle():
             vehicle.driver_id = None
-        elif vehicle.is_driver_without_car():
+        elif vehicle.is_driver_without_vehicle():
             try:
                 d_list = Driver.objects.all().values('id')
             except Driver.DoesNotExist:
@@ -183,4 +183,4 @@ def add_or_remove_driver_from_vehicle(request, vehicle_id):
             vehicle.driver_id = driver_instance
         vehicle.save(update_fields=['driver_id'])
         serializer = VehicleSerializer(vehicle)
-        return JsonResponse(serializer, status=status.HTTP_200_OK)
+        return JsonResponse(serializer.data, status=status.HTTP_200_OK)

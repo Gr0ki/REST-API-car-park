@@ -88,31 +88,45 @@ class VehicleTests(APITestCase, URLPatternsTestCase):
     ]
 
     def setUp(self):
-        self.expected_post_data = Vehicle.objects.create(                              # DATE_FORMAT BUG
+        self.driver_instance = Driver.objects.create(
+            first_name='Karl',
+            last_name='Winslow',
+            created_at='1980-11-16',
+            updated_at='2021-12-18'
+        )
+
+        self.first_vehicle_instance = Vehicle.objects.create(
             driver_id=None,
             make='BYD',
             model='random',
             plate_number='АЕ 8736 АВ',
-            created_at='10/10/2020',
-            updated_at='11/10/2021'
+            created_at='2020-10-10',
+            updated_at='2021-10-11'
+        )
+
+        self.second_vehicle_instance = Vehicle.objects.create(
+            driver_id=self.driver_instance,
+            make='Tesla',
+            model='Model X',
+            plate_number='ВА 8736 АГ',
+            created_at='2020-01-05',
+            updated_at='2021-11-07'
         )
 
         self.post_data = {
-            'driver_id': '2', 'make': 'Nissan', 'model': 'leaf', 'plate_number': 'АА 6727 НР',
+            'driver_id': '1', 'make': 'Nissan', 'model': 'leaf', 'plate_number': 'АА 6727 НР',
             'created_at': '20/11/2021', 'updated_at': '12/12/2021'
         }
-        self.expected_post_data = {'id': 2}
-        self.expected_post_data.update(self.post_data)
 
     def test_create_vehicle(self):
         """
         Test for creating a new vehicle
         """
         url = reverse('vehicles-list')
-        response = self.client.post(url, self.post_data)                              # DATE_FORMAT BUG
+        response = self.client.post(url, self.post_data)
         assert response.status_code == 201
-        self.assertEqual(Vehicle.objects.count(), 2)
-        assert json.loads(response.content) == self.expected_post_data
+        self.assertEqual(Vehicle.objects.count(), 3)
+        assert json.loads(response.content)['make'] == self.post_data['make']
 
     def test_get_vehicles_list(self):
         """
@@ -127,7 +141,7 @@ class VehicleTests(APITestCase, URLPatternsTestCase):
         Test for displaying a list of vehicles with or without drivers
         """
         driver_status = 'yes'
-        while driver_status is not 'no':
+        while driver_status != 'no':
             url = reverse('vehicles-list-with-or-without-driver', kwargs={'driver_status': driver_status})
             response = self.client.get(url)
             assert response.status_code == 200
@@ -151,19 +165,26 @@ class VehicleTests(APITestCase, URLPatternsTestCase):
         """
         Test for receiving information about a specific vehicle
         """
-        # url = reverse('vehicle-info', kwargs={'vehicle_id': })
-        pass
+        url = reverse('vehicle-info', kwargs={'vehicle_id': int(self.first_vehicle_instance.__dict__['id'])})
+        response = self.client.get(url)
+        assert response.status_code == 200
 
     def test_delete_vehicle_info(self):
         """
         Test for deleting information about a specific vehicle
         """
-        # url = reverse('vehicle-info', kwargs={'vehicle_id': })
-        pass
+        url = reverse('vehicle-info', kwargs={'vehicle_id': int(self.first_vehicle_instance.__dict__['id'])})
+        response = self.client.delete(url)
+        assert response.status_code == 204
 
     def test_add_or_remove_driver_from_vehicle(self):
         """
         Test for putting the driver in the car or getting the driver out of the car
         """
-        # url = reverse('add-or-remove-driver-from-vehicle', kwargs={'vehicle_id': })
-        pass
+        url = reverse(
+            'add-or-remove-driver-from-vehicle',
+            kwargs={'vehicle_id': int(self.second_vehicle_instance.__dict__['id'])}
+            )
+        response = self.client.post(url)
+        assert response.status_code == 200
+        assert json.loads(response.content)['driver_id'] != self.second_vehicle_instance.__dict__['driver_id_id']
