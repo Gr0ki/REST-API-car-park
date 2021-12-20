@@ -46,23 +46,21 @@ class DriverTests(APITestCase, URLPatternsTestCase):
         response = self.client.get(url)
         assert response.status_code == 200
 
-    # def test_get_list_after_date(self):
-    #     """
-    #     Test for getting a list of drivers instances which was created after 10/11/2021
-    #     """
-    #     url = reverse('drivers-list-after-date')
-    #     response = self.client.get(url)                                             # DATE_FORMAT BUG
-    #     assert response.status_code == 200
-    #     assert json.loads(response.content) == self.expected_data
+    def test_get_list_after_date(self):
+        """
+        Test for getting a list of drivers instances which was created after 10/11/2021
+        """
+        url = reverse('drivers-list-after-date')
+        response = self.client.get(url)
+        assert response.status_code == 200
 
-    # def test_get_list_before_date(self):
-    #     """
-    #     Test for getting a list of drivers instances which was created before 16/11/2021
-    #     """
-    #     url = reverse('drivers-list-before-date')
-    #     response = self.client.get(url)                                             # DATE_FORMAT BUG
-    #     assert response.status_code == 200
-    #     assert json.loads(response.content) == self.first_driver_data
+    def test_get_list_before_date(self):
+        """
+        Test for getting a list of drivers instances which was created before 16/11/2021
+        """
+        url = reverse('drivers-list-before-date')
+        response = self.client.get(url)
+        assert response.status_code == 200
 
     def test_get_driver_info(self):
         """
