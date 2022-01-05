@@ -16,7 +16,7 @@ urlpatterns = [
             views.is_driver_in_vehicle,
             name='is-driver-in-vehicle'
             ),
-    re_path(r'^vehicle/(?P<vehicle_id>[0-9]+)/$',                   # GET, UPDATE (PATCH), DELETE
+    re_path(r'^vehicle/(?P<vehicle_id>[0-9]+)/$',                   # GET, DELETE
             views.vehicle_info,
             name='vehicle-info'
             ),
